@@ -2,34 +2,34 @@ import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
 
+let guesses;
+
 export default function App() {
   
-  const [header, setHeader] = useState("Guess a number between 1-100");
+  const [header, setHeader] = useState("");
   const [input, setInput] = useState("");
   const [number, setNumber] = useState(0);
-  const [guesses, setGuesses] = useState(1);
   
-  useEffect(() => {
-    setNumber(Math.floor(Math.random() * 100) + 1);
-  }, []);
-
-  const correct = () => {
-    Alert.alert("You guessed the number in " + guesses + " guesses");
-    setGuesses(1);
+  const init = () => {
+    guesses = 0;
     setNumber(Math.floor(Math.random() * 100) + 1);
     setHeader("Guess a number between 1-100");
   }
 
+  useEffect(() => {
+    init();
+  }, []);
+
   const guess = () => {
     console.log(number);
+    guesses++;
     if (parseInt(input) == number) {
-      correct();
+      Alert.alert("You guessed the number in " + guesses + " guesses");
+      init();
     } else if (parseInt(input) > number) {
       setHeader("Your guess is too high");
-      setGuesses(guesses + 1);
     } else if (parseInt(input) < number) {
       setHeader("Your guess is too low");
-      setGuesses(guesses + 1);
     }
     setInput("");
   }
